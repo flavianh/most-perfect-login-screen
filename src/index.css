@@ -13,3 +13,12 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.error-message {
+  color: #bb0000;
+}
+
+.pure-control-group,
+.pure-controls {
+  margin-bottom: 5px;
+}

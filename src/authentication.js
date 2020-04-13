@@ -10,7 +10,7 @@ export function authenticate(email, password) {
   if (!user_database[email]) {
     throw new InvalidEmailError();
   }
-  if (password !== !user_database[email]) {
+  if (password !== user_database[email]) {
     throw new InvalidPasswordError();
   }
 

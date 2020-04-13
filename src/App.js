@@ -41,23 +41,33 @@ function App(props) {
     >
       {() => (
         <Form className="pure-form pure-form-stacked" aria-label="loginForm">
-          <label htmlFor="email">email</label>
-          <Field id="email" name="email" required />
-          <ErrorMessage
-            component="div"
-            id="email-error"
-            name="email"
-            role="alert"
-          />
-          <label htmlFor="password">password</label>
-          <Field id="password" name="password" required />
-          <ErrorMessage
-            component="div"
-            id="password-error"
-            name="password"
-            role="alert"
-          />
-          <button type="submit">login</button>
+          <div className="pure-control-group">
+            <label htmlFor="email">email</label>
+            <Field id="email" name="email" type="email" required />
+            <ErrorMessage
+              component="div"
+              id="email-error"
+              name="email"
+              role="alert"
+              className="pure-form-message-inline error-message"
+            />
+          </div>
+          <div className="pure-control-group">
+            <label htmlFor="password">password</label>
+            <Field id="password" name="password" type="password" required />
+            <ErrorMessage
+              component="div"
+              id="password-error"
+              name="password"
+              role="alert"
+              className="pure-form-message-inline error-message"
+            />
+          </div>
+          <div className="pure-controls">
+            <button type="submit" className="pure-button pure-button-primary">
+              login
+            </button>
+          </div>
           <div>{logState}</div>
         </Form>
       )}

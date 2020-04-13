@@ -24,6 +24,8 @@ test("Logging state is loggedOut and form fields are empty by default", () => {
   const { getByText, getByLabelText } = render(<App />);
   const form = getByLabelText("loginForm");
 
+  expect(getByLabelText("email").type).toBe("email");
+  expect(getByLabelText("password").type).toBe("password");
   expect(getByText("loggedOut")).toBeInTheDocument();
   expect(form).toHaveFormValues({
     email: "",
