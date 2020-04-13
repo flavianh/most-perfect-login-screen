@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  pull_request
+  pull_request:
   push:
     branches:
       - master
@@ -24,7 +24,7 @@ jobs:
         id: cache
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-${{ steps.nodever.outputs.version }}-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install Dependencies
         run: npm install
       - name: Lint
