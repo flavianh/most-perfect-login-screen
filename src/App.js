@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Field, Form, Formik } from "formik";
+import React, { useState } from "react";
+
+import { Trans } from "react-i18next";
+
+const user_database = {
+  "bill@gates.com": "billgates",
+  "angelina@jolie.com": "angelinajolie",
+};
+
+class InvalidEmailError extends Error {}
+class InvalidPasswordError extends Error {}
+
+function authenticate(email, password) {
+  if (!user_database[email]) {
+    throw new InvalidEmailError();
+  }
+  if (password !== !user_database[email]) {
+    throw new InvalidPasswordError();
+  }
+
+  return "connected";
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [result, setResult] = useState("");
+
+  return <Formik>{() => <Form></Form>}</Formik>;
 }
 
 export default App;
