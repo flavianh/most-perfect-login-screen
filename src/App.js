@@ -3,8 +3,7 @@ import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { InvalidEmailError, InvalidPasswordError } from "./authentication";
 import React, { useState } from "react";
-
-import { Trans } from "react-i18next";
+import { Trans, Translation } from "react-i18next";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -13,65 +12,83 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required("pleaseEnterPassword"),
 });
 
+function divTrans({ children, ...props }) {
+  return (
+    <div {...props}>
+      <Trans>{children}</Trans>
+    </div>
+  );
+}
+
 function App(props) {
   const [logState, setLogState] = useState("loggedOut");
   const { authenticate } = props;
 
   return (
-    <Formik
-      initialValues={{
-        email: "", // Otherwise you get "cannot read property email of undefined"
-        password: "",
-      }}
-      validationSchema={LoginSchema}
-      onSubmit={({ email, password }, { setErrors }) => {
-        try {
-          authenticate(email, password);
-          setLogState("loggedIn");
-        } catch (error) {
-          if (error instanceof InvalidEmailError) {
-            setErrors({ email: "emailNotInOurSystem" });
-          } else if (error instanceof InvalidPasswordError) {
-            setErrors({ password: "passwordNotInOurSystem" });
-          } else {
-            setLogState("systemError");
-          }
-        }
-      }}
-    >
-      {() => (
-        <Form className="pure-form pure-form-stacked" aria-label="loginForm">
-          <div className="pure-control-group">
-            <label htmlFor="email">email</label>
-            <Field id="email" name="email" type="email" required />
-            <ErrorMessage
-              component="div"
-              id="email-error"
-              name="email"
-              role="alert"
-              className="pure-form-message-inline error-message"
-            />
-          </div>
-          <div className="pure-control-group">
-            <label htmlFor="password">password</label>
-            <Field id="password" name="password" type="password" required />
-            <ErrorMessage
-              component="div"
-              id="password-error"
-              name="password"
-              role="alert"
-              className="pure-form-message-inline error-message"
-            />
-          </div>
-          <div className="pure-controls">
-            <button type="submit" className="pure-button pure-button-primary">
-              login
-            </button>
-          </div>
-          <div>{logState}</div>
-        </Form>
+    <Translation>
+      {(t) => (
+        <Formik
+          initialValues={{
+            email: "", // Otherwise you get "cannot read property email of undefined"
+            password: "",
+          }}
+          validationSchema={LoginSchema}
+          onSubmit={({ email, password }, { setErrors }) => {
+            try {
+              authenticate(email, password);
+              setLogState("loggedIn");
+            } catch (error) {
+              if (error instanceof InvalidEmailError) {
+                setErrors({ email: "emailNotInOurSystem" });
+              } else if (error instanceof InvalidPasswordError) {
+                setErrors({ password: "passwordNotInOurSystem" });
+              } else {
+                setLogState("systemError");
+              }
+            }
+          }}
+        >
+          {() => (
+            <Form
+              className="pure-form pure-form-stacked"
+              aria-label="loginForm"
+            >
+              <div className="pure-control-group">
+                <label htmlFor="email">{t("email")}</label>
+                <Field id="email" name="email" type="email" required />
+                <ErrorMessage
+                  id="email-error"
+                  role="alert"
+                  component={divTrans}
+                  className="pure-form-message-inline error-message"
+                  name="email"
+                />
+              </div>
+              <div className="pure-control-group">
+                <label htmlFor="password">{t("password")}</label>
+                <Field id="password" name="password" type="password" required />
+                <ErrorMessage
+                  component={divTrans}
+                  id="password-error"
+                  name="password"
+                  role="alert"
+                  className="pure-form-message-inline error-message"
+                />
+              </div>
+              <div className="pure-controls">
+                <button
+                  type="submit"
+                  className="pure-button pure-button-primary"
+                >
+                  {t("login")}
+                </button>
+              </div>
+              <div>{t(logState)}</div>
+            </Form>
+          )}
+        </Formik>
       )}
-    </Formik>
+    </Translation>
   );
 }
 
