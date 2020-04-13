@@ -1,12 +1,7 @@
-import {
-  fireEvent,
-  getByLabelText,
-  render,
-  wait,
-} from "@testing-library/react";
+import { InvalidEmailError, InvalidPasswordError } from "./authentication";
+import { fireEvent, render, wait } from "@testing-library/react";
 
 import App from "./App";
-import { InvalidEmailError } from "./authentication";
 import React from "react";
 
 async function changeField(field, value) {
@@ -37,7 +32,16 @@ test("Logging state is loggedOut and form fields are empty by default", () => {
 });
 
 test("Logging state switches to loggedIn with valid credentials", async () => {
-  const { getByLabelText, getByText } = render(<App />);
+  const { getByLabelText, getByText } = render(
+    <App
+      authenticate={(email, password) => {
+        if (email !== "testemail@email.com" || password !== "testpassword") {
+          throw new Error("Invalid credentials");
+        }
+        return "loggedIn";
+      }}
+    />
+  );
   const email = getByLabelText("email");
   const password = getByLabelText("password");
   const loginButton = getByText("login");
@@ -77,23 +81,36 @@ test("pleaseEnterValidEmail should appear if a wrong email was set when hitting 
   expect(error.id).toBe(`${labelText}-error`);
 });
 
-test("If authenticate raises InvalidEmailError, show emailNotInOurSystem as an email error", async () => {
-  const authenticate = () => {
-    throw new InvalidEmailError();
-  };
+[
+  {
+    authenticate: () => {
+      throw new InvalidEmailError();
+    },
+    errorId: "email-error",
+    errorMessage: "emailNotInOurSystem",
+  },
+  {
+    authenticate: () => {
+      throw new InvalidPasswordError();
+    },
+    errorId: "password-error",
+    errorMessage: "passwordNotInOurSystem",
+  },
+].forEach(({ authenticate, errorId, errorMessage }) => {
+  test(`Show ${errorMessage} error on specific authenticate exception`, async () => {
+    const { getByLabelText, getByText } = render(
+      <App authenticate={authenticate} />
+    );
+    const email = getByLabelText("email");
+    const password = getByLabelText("password");
+    const loginButton = getByText("login");
 
-  const { getByLabelText, getByText } = render(
-    <App authenticate={authenticate} />
-  );
-  const email = getByLabelText("email");
-  const password = getByLabelText("password");
-  const loginButton = getByText("login");
+    await changeField(email, "testemail@email.com");
+    await changeField(password, "testpassword");
+    await clickOnButton(loginButton);
 
-  await changeField(email, "testemail@email.com");
-  await changeField(password, "testpassword");
-  await clickOnButton(loginButton);
-
-  const error = getByText("emailNotInOurSystem");
-  expect(error).toBeInTheDocument();
-  expect(error.id).toBe("email-error");
+    const error = getByText(errorMessage);
+    expect(error).toBeInTheDocument();
+    expect(error.id).toBe(errorId);
+  });
 });

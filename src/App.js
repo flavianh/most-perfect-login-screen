@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { InvalidEmailError, authenticate } from "./authentication";
+import { InvalidEmailError, InvalidPasswordError } from "./authentication";
 import React, { useState } from "react";
 
 import { Trans } from "react-i18next";
@@ -24,22 +24,25 @@ function App(props) {
         password: "",
       }}
       validationSchema={LoginSchema}
-      onSubmit={(_, { setErrors }) => {
+      onSubmit={({ email, password }, { setErrors }) => {
         try {
-          authenticate();
+          authenticate(email, password);
+          setLogState("loggedIn");
         } catch (error) {
           if (error instanceof InvalidEmailError) {
             setErrors({ email: "emailNotInOurSystem" });
+          } else if (error instanceof InvalidPasswordError) {
+            setErrors({ password: "passwordNotInOurSystem" });
+          } else {
+            setLogState("systemError");
           }
-        } finally {
-          setLogState("loggedIn");
         }
       }}
     >
       {() => (
         <Form className="pure-form pure-form-stacked" aria-label="loginForm">
           <label htmlFor="email">email</label>
-          <Field id="email" name="email" required="true" />
+          <Field id="email" name="email" required />
           <ErrorMessage
             component="div"
             id="email-error"
@@ -47,7 +50,7 @@ function App(props) {
             role="alert"
           />
           <label htmlFor="password">password</label>
-          <Field id="password" name="password" required="true" />
+          <Field id="password" name="password" required />
           <ErrorMessage
             component="div"
             id="password-error"
