@@ -20,6 +20,11 @@ async function clickOnButton(button) {
   });
 }
 
+test("Renders correctly", () => {
+  const { asFragment } = render(<App />);
+  expect(asFragment()).toMatchSnapshot();
+});
+
 test("Logging state is loggedOut and form fields are empty by default", () => {
   const { getByText, getByLabelText } = render(<App />);
   const form = getByLabelText("loginForm");

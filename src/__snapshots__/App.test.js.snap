@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders correctly 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+    aria-label="loginForm"
+    class="pure-form pure-form-stacked"
+  >
+    <div
+      class="pure-control-group"
+    >
+      <label
+        for="email"
+      >
+        email
+      </label>
+      <input
+        id="email"
+        name="email"
+        required=""
+        type="email"
+        value=""
+      />
+    </div>
+    <div
+      class="pure-control-group"
+    >
+      <label
+        for="password"
+      >
+        password
+      </label>
+      <input
+        id="password"
+        name="password"
+        required=""
+        type="password"
+        value=""
+      />
+    </div>
+    <div
+      class="pure-controls"
+    >
+      <button
+        class="pure-button pure-button-primary"
+        type="submit"
+      >
+        login
+      </button>
+    </div>
+    <div>
+      loggedOut
+    </div>
+  </form>
+</DocumentFragment>
+`;
