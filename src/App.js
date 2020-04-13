@@ -8,8 +8,8 @@ const user_database = {
   "angelina@jolie.com": "angelinajolie",
 };
 
-class InvalidEmailError extends Error {}
-class InvalidPasswordError extends Error {}
+export class InvalidEmailError extends Error {}
+export class InvalidPasswordError extends Error {}
 
 function authenticate(email, password) {
   if (!user_database[email]) {
@@ -19,13 +19,34 @@ function authenticate(email, password) {
     throw new InvalidPasswordError();
   }
 
-  return "connected";
+  return "loggedIn";
 }
 
 function App() {
-  const [result, setResult] = useState("");
+  const [logState, setLogState] = useState("loggedOut");
 
-  return <Formik>{() => <Form></Form>}</Formik>;
+  return (
+    <Formik
+      initialValues={{
+        email: "", // Otherwise you get "cannot read property email of undefined"
+        password: "",
+      }}
+      onSubmit={() => {
+        setLogState("loggedIn");
+      }}
+    >
+      {() => (
+        <Form className="pure-form pure-form-stacked" aria-label="loginForm">
+          <label htmlFor="email">email</label>
+          <Field id="email" name="email" />
+          <label htmlFor="password">password</label>
+          <Field id="password" name="password" />
+          <button type="submit">login</button>
+          <div>{logState}</div>
+        </Form>
+      )}
+    </Formik>
+  );
 }
 
 export default App;
