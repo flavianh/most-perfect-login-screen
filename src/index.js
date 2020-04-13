@@ -6,10 +6,11 @@ import * as serviceWorker from "./serviceWorker";
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom";
+import { authenticate } from "./authentication";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App authenticate={authenticate} />
   </React.StrictMode>,
   document.getElementById("root")
 );
