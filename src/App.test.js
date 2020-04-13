@@ -103,6 +103,13 @@ test("pleaseEnterValidEmail should appear if a wrong email was set when hitting 
     errorId: "password-error",
     errorMessage: "passwordNotInOurSystem",
   },
+  {
+    authenticate: () => {
+      throw new Error();
+    },
+    errorId: "log-state",
+    errorMessage: "systemError",
+  },
 ].forEach(({ authenticate, errorId, errorMessage }) => {
   test(`Show ${errorMessage} error on specific authenticate exception`, async () => {
     const { getByLabelText, getByText } = render(

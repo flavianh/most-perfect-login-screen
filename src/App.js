@@ -83,7 +83,7 @@ function App(props) {
                   {t("login")}
                 </button>
               </div>
-              <div>{t(logState)}</div>
+              <div id="log-state">{t(logState)}</div>
             </Form>
           )}
         </Formik>

@@ -17,6 +17,7 @@ const resources = {
       pleaseEnterValidEmail: "Please enter a valid email",
       emailNotInOurSystem: "This email is not in our system",
       passwordNotInOurSystem: "This password is not in our system",
+      systemError: "System error. Please try again in a few minutes",
     },
   },
   fr: {
@@ -32,6 +33,8 @@ const resources = {
       emailNotInOurSystem: "Cet email ne se trouve pas dans notre système",
       passwordNotInOurSystem:
         "Cet mot de passe ne se trouve pas dans notre système",
+      systemError:
+        "Erreur système. Veuillez essayer de nouveau dans quelques minutes",
     },
   },
   es: {
@@ -46,6 +49,8 @@ const resources = {
       pleaseEnterValidEmail: "Por favor ingrese un email válida",
       emailNotInOurSystem: "Este email no está en nuestro sistema",
       passwordNotInOurSystem: "Esta contraseña no está en nuestro sistema",
+      systemError:
+        "Error del sistema. Por favor intente nuevamente en unos minutos",
     },
   },
 };

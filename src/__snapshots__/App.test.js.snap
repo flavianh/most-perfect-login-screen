@@ -49,7 +49,9 @@ exports[`Renders correctly 1`] = `
         login
       </button>
     </div>
-    <div>
+    <div
+      id="log-state"
+    >
       loggedOut
     </div>
   </form>
