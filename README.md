@@ -35,6 +35,7 @@ We code in TDD:
 
 We use:
 
+- React
 - Formik for form state management
 - Yup for form validation
 - react-i18next for Translations
